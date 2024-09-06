@@ -14,10 +14,10 @@ import { CreateBudgetForm } from './forms/create-budget-form';
 export const CreateBudget = () => {
     const [open, setOpen] = useState(false)
     return (
-        <div>
+        <div className="rounded-lg">
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
-                    <div className="flex flex-col bg-slate-100 p-10 rounded-10 items-center border-2 border-dashed cursor-pointer hover:shadow-sm ">
+                    <div className="flex flex-col bg-slate-100 p-10 rounded-lg items-center border-2 border-dashed cursor-pointer hover:shadow-sm ">
                         <h2 className="text-3xl">+</h2>
                         <h2>Create New Budget </h2>
                     </div>
