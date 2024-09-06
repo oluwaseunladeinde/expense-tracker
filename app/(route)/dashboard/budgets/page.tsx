@@ -1,8 +1,12 @@
 import React from 'react'
+import { BudgetList } from './_components/budget-list'
 
 const BudgetsPage = () => {
     return (
-        <div>BudgetsPage</div>
+        <div className='p-10'>
+            <h2 className='font-bold text-3xl'>My Budgets</h2>
+            <BudgetList />
+        </div>
     )
 }
 

@@ -13,3 +13,10 @@ declare type NewUserParams = {
     name: string;
     password: string;
 };
+
+
+declare type CreateBudgetParams = {
+    name: string;
+    amount: string;
+    icon: string;
+}

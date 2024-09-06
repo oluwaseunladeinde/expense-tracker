@@ -38,7 +38,7 @@ const menuList = [
 const SideNav = () => {
     const path = usePathname();
     return (
-        <div className='h-screen p-5 border shadow-sm items-center'>
+        <div className='h-screen p-5 border-r shadow-sm items-center'>
             <div>
                 <Image
                     src={'/logo.svg'}
@@ -53,7 +53,7 @@ const SideNav = () => {
                         href={menu.path}
                         className={cn(
                             'flex gap-2 items-center text-gray-500 font-medium p-5 mb-2 cursor-pointer rounded-md hover:text-primary hover:bg-primary/10',
-                            path === menu.path && "text-white bg-primary hover:bg-primary hover:text-white font-semibold"
+                            path === menu.path && "text-white bg-primary hover:bg-primary hover:text-white font-semibold rounded-md"
                         )}>
                         <menu.icon />
                         {menu.name}
