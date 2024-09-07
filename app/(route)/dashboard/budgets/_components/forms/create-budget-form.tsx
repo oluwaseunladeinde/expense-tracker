@@ -17,9 +17,11 @@ import { IconList } from "@/lib/constants";
 
 import { SelectItem } from "@/components/ui/select";
 import { createBudget } from "@/lib/actions/budget.actions";
+import { useRouter } from "next/navigation";
 
 export const CreateBudgetForm = ({ openDialog }: { openDialog: Dispatch<SetStateAction<boolean>> }) => {
     const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
 
     const form = useForm<z.infer<typeof BudgetFormValidation>>({
         resolver: zodResolver(BudgetFormValidation),
@@ -43,7 +45,7 @@ export const CreateBudgetForm = ({ openDialog }: { openDialog: Dispatch<SetState
             if (newBudget) {
                 toast.success("Budget creation was succesful.");
                 openDialog(false);
-                //router.push(`/patients/${newBudget}/register`);
+                router.refresh();
             }
         } catch (error) {
             console.log(error);

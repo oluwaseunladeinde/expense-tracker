@@ -3,7 +3,7 @@
 import { db } from "@/db/drizzle";
 import { budgets, expenses } from "@/db/schema";
 import { currentUser } from "@clerk/nextjs/server";
-import { eq, getTableColumns, sql } from "drizzle-orm";
+import { desc, eq, getTableColumns, sql } from "drizzle-orm";
 
 export const createBudget = async (budget: CreateBudgetParams) => {
     const user = await currentUser();
@@ -41,7 +41,8 @@ export const getBudgets = async () => {
             .from(budgets)
             .leftJoin(expenses, eq(budgets.id, expenses.budgetId))
             .where(eq(budgets.createdBy, user?.primaryEmailAddress?.emailAddress))
-            .groupBy(budgets.id);
+            .groupBy(budgets.id)
+            .orderBy(desc(budgets.createdAt));
 
         return response;
     } catch (error) {
