@@ -5,28 +5,28 @@ import { budgets, expenses } from "@/db/schema";
 import { currentUser } from "@clerk/nextjs/server";
 import { desc, eq, getTableColumns, sql } from "drizzle-orm";
 
-export const createBudget = async (budget: CreateBudgetParams) => {
+export const createExpense = async (expense: AddExpenseParams) => {
     const user = await currentUser();
 
-    if (!user) {
+    if (!user || !expense.budgetId) {
         throw Error("No user exists!!!");
     }
 
     try {
         const response = await db
-            .insert(budgets)
+            .insert(expenses)
             .values({
-                ...budget,
-                createdBy: user.primaryEmailAddress?.emailAddress || 'sean.legend@gmail.com'
+                ...expense,
+                budgetId: Number(expense.budgetId)
             })
             .returning({ insertedId: budgets.id });
         return response;
     } catch (error) {
-        console.error("An error occurred while creating a new budget:", error);
+        console.error("An error occurred while creating a new expense:", error);
     }
 };
 
-export const getBudgets = async () => {
+export const getExpenses = async () => {
     const user = await currentUser();
     if (!user) {
         throw Error("No budget exists!!!");
@@ -51,7 +51,7 @@ export const getBudgets = async () => {
 }
 
 
-export const getBudget = async ({ expenseId }: { expenseId: string }) => {
+export const getExpense = async ({ expenseId }: { expenseId: string }) => {
     const user = await currentUser();
     if (!user) {
         throw Error("No budget exists!!!");

@@ -17,7 +17,7 @@ export const CreateBudget = () => {
         <div className="rounded-lg">
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
-                    <div className="flex flex-col bg-slate-100 p-10 rounded-lg items-center border-2 border-dashed cursor-pointer hover:shadow-sm ">
+                    <div className="flex flex-col bg-slate-100 p-10 rounded-lg items-center border-2 border-dashed cursor-pointer hover:shadow-sm h-[150px]">
                         <h2 className="text-3xl">+</h2>
                         <h2>Create New Budget </h2>
                     </div>

@@ -21,6 +21,16 @@ declare type CreateBudgetParams = {
     icon: string;
 }
 
+declare type AddExpenseParams = {
+    name: string;
+    amount: string;
+    budgetId: string;
+}
+
 declare type BudgetItemProps = {
     budget: Budgets;
+}
+
+declare type ExpenseItemProps = {
+    budgetId: string;
 }

@@ -1,6 +1,6 @@
 import { getBudgets } from "@/lib/actions/budget.actions";
 import { CreateBudget } from "./create-budget";
-import BudgetItem from "./budget-item";
+import { BudgetItem } from "./budget-item";
 
 export const BudgetList = async () => {
     const budgets = await getBudgets();
