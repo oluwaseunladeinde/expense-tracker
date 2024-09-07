@@ -51,7 +51,7 @@ export const getBudgets = async () => {
 }
 
 
-export const getBudget = async ({ expenseId }: { expenseId: string }) => {
+export const getBudget = async ({ budgetId }: { budgetId: string }) => {
     const user = await currentUser();
     if (!user) {
         throw Error("No budget exists!!!");
@@ -66,7 +66,7 @@ export const getBudget = async ({ expenseId }: { expenseId: string }) => {
             .from(budgets)
             .leftJoin(expenses, eq(budgets.id, expenses.budgetId))
             .where(eq(budgets.createdBy, user?.primaryEmailAddress?.emailAddress))
-            .where(eq(budgets.id, expenseId))
+            .where(eq(budgets.id, budgetId))
             .groupBy(budgets.id);
 
         return response

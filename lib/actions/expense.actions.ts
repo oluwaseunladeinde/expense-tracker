@@ -26,24 +26,17 @@ export const createExpense = async (expense: AddExpenseParams) => {
     }
 };
 
-export const getExpenses = async () => {
+export const getExpenses = async (budgetId: string) => {
     const user = await currentUser();
     if (!user) {
-        throw Error("No budget exists!!!");
+        throw Error("Not authorized");
     }
 
     try {
-        const response = await db.select({
-            ...getTableColumns(budgets),
-            totalSpend: sql`sum(${expenses.amount})`.mapWith(Number),
-            totalItem: sql`count(${expenses.id})`.mapWith(Number),
-        })
-            .from(budgets)
-            .leftJoin(expenses, eq(budgets.id, expenses.budgetId))
-            .where(eq(budgets.createdBy, user?.primaryEmailAddress?.emailAddress))
-            .groupBy(budgets.id)
-            .orderBy(desc(budgets.createdAt));
-
+        const response = await db.select()
+            .from(expenses)
+            .where(eq(expenses.budgetId, budgetId))
+            .orderBy(desc(expenses.createdAt));
         return response;
     } catch (error) {
         console.error("An error occurred while getting all budgets:", error);
@@ -51,25 +44,18 @@ export const getExpenses = async () => {
 }
 
 
-export const getExpense = async ({ expenseId }: { expenseId: string }) => {
+export const deleteExpense = async (expense: ExpenseProps) => {
     const user = await currentUser();
     if (!user) {
-        throw Error("No budget exists!!!");
+        throw Error("Not authorized");
     }
 
     try {
-        const response = await db.select({
-            ...getTableColumns(budgets),
-            totalSpend: sql`sum(${expenses.amount})`.mapWith(Number),
-            totalItem: sql`count(${expenses.id})`.mapWith(Number),
-        })
-            .from(budgets)
-            .leftJoin(expenses, eq(budgets.id, expenses.budgetId))
-            .where(eq(budgets.createdBy, user?.primaryEmailAddress?.emailAddress))
-            .where(eq(budgets.id, expenseId))
-            .groupBy(budgets.id);
-
-        return response
+        const resp = await db
+            .delete(expenses)
+            .where(eq(expenses.id, expense.id))
+            .returning();
+        return resp;
     } catch (error) {
         console.error("An error occurred while getting the budget:", error);
     }

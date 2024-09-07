@@ -1,10 +1,11 @@
+import { getExpenses } from '@/lib/actions/expense.actions';
 import { IconList } from '@/lib/constants';
 import { formatNaira } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
 
-export const BudgetItem = ({ budget }: BudgetItemProps) => {
+export const BudgetItem = async ({ budget }: BudgetItemProps) => {
 
     const bugdetIcon = IconList.find((icon) => icon.name === budget.icon) || IconList[0];
 
