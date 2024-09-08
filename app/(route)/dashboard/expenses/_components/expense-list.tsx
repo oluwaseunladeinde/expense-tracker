@@ -49,12 +49,12 @@ const ExpenseList = ({ expensesList }: ExpenseListProps) => {
                     <h2 className='font-normal'>{expense.name}</h2>
                     <h2 className='font-normal'>{formatNaira(expense.amount)}</h2>
                     <h2 className='font-normal'>{formatDateTime(expense.createdAt).dateTime}</h2>
-                    <h2 className='font-normal' title={`Delete ${expense.name}`} >
+                    <div className='flex text-red-500 font-normal items-center justify-start cursor-pointer' title={`Delete ${expense.name}`} >
                         {isLoading ?
                             <Loader2 className='text-primary animate-spin' /> :
-                            <Trash className='text-red-500 hover:text-red-700 cursor-pointer' onClick={() => onDeleteExpense(expense)} />
+                            <Trash className='w-4 h-4 text-red-500 hover:text-red-700 mr-2' onClick={() => onDeleteExpense(expense)} />
                         }
-                    </h2>
+                    </div>
                 </div>
             ))}
 

@@ -37,6 +37,7 @@ declare type AddExpenseParams = {
 
 declare type BudgetItemProps = {
     budget: Budgets;
+    height?: string;
 }
 
 declare type ExpenseItemProps = {
