@@ -51,18 +51,20 @@ export const getBudgets = async () => {
 }
 
 
-export const getBudget = async ({ budgetId }: { budgetId: string }) => {
+export const getBudget = async (budgetId: string | undefined) => {
     const user = await currentUser();
-    if (!user || !user.primaryEmailAddress) {
+    if (!user || !user.primaryEmailAddress || !budgetId) {
         throw Error("No budget exists!!!");
     }
 
     try {
-        const response = await db.select({
-            ...getTableColumns(budgets),
-            totalSpend: sql`sum(${expenses.amount})`.mapWith(Number),
-            totalItem: sql`count(${expenses.id})`.mapWith(Number),
-        })
+        let result = null;
+        const response = await db
+            .select({
+                ...getTableColumns(budgets),
+                totalSpend: sql`sum(${expenses.amount})`.mapWith(Number),
+                totalItem: sql`count(${expenses.id})`.mapWith(Number),
+            })
             .from(budgets)
             .leftJoin(expenses, eq(budgets.id, expenses.budgetId))
             .where(
@@ -73,6 +75,34 @@ export const getBudget = async ({ budgetId }: { budgetId: string }) => {
             )
             .groupBy(budgets.id);
 
+        if (response && response.length > 0) {
+            result = response[0];
+        }
+        return result;
+    } catch (error) {
+        console.error("An error occurred while getting the budget:", error);
+        return null;
+    }
+}
+
+
+export const updateBudget = async (budgetId: string | undefined, values: any) => {
+    const user = await currentUser();
+    if (!user || !user.primaryEmailAddress || !budgetId) {
+        throw Error("No budget exists!!!");
+    }
+
+    try {
+        const response = await db
+            .update(budgets)
+            .set(values)
+            .where(
+                and(
+                    eq(budgets.createdBy, user.primaryEmailAddress.emailAddress),
+                    eq(budgets.id, Number(budgetId)),
+                )
+            )
+            .returning();
         return response;
     } catch (error) {
         console.error("An error occurred while getting the budget:", error);
@@ -81,23 +111,23 @@ export const getBudget = async ({ budgetId }: { budgetId: string }) => {
 }
 
 
-export const deleteBudget = async (budgetId: number) => {
+export const deleteBudget = async (budgetId: string | undefined) => {
     const user = await currentUser();
-    if (!user || !user.primaryEmailAddress) {
+    if (!user || !user.primaryEmailAddress || !budgetId) {
         throw Error("No budget exists!!!");
     }
 
     try {
         const deleteBudget = await db
             .delete(expenses)
-            .where(eq(expenses.budgetId, budgetId))
+            .where(eq(expenses.budgetId, Number(budgetId)))
             .returning();
         if (deleteBudget) {
             const res = await db
                 .delete(budgets)
                 .where(
                     and(
-                        eq(budgets.id, budgetId),
+                        eq(budgets.id, Number(budgetId)),
                         eq(budgets.createdBy, user?.primaryEmailAddress?.emailAddress)
                     )
                 )
@@ -107,8 +137,6 @@ export const deleteBudget = async (budgetId: number) => {
         } else {
             throw Error("Budget deletion failed");
         }
-
-
     } catch (error) {
 
     }

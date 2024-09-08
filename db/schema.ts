@@ -7,17 +7,19 @@ import {
     timestamp,
     varchar
 } from "drizzle-orm/pg-core";
+import { createInsertSchema } from "drizzle-zod";
 
 
 export const budgets = pgTable("budgets", {
     id: serial("id").primaryKey(),
     name: varchar("name").notNull().unique(),
-    amount: text("amount").notNull(),
+    amount: integer("amount").notNull(),
     icon: text("icon"),
     createdBy: varchar("created_by").notNull(),
     createdAt: timestamp('created_at').defaultNow(),
     updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date()),
 });
+export const insertBudgetSchema = createInsertSchema(budgets);
 
 export const expenses = pgTable("expenses", {
     id: serial("id").primaryKey(),
@@ -27,5 +29,6 @@ export const expenses = pgTable("expenses", {
     createdAt: timestamp('created_at').defaultNow(),
     updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date()),
 })
+export const insertExpenseSchema = createInsertSchema(expenses);
 
 

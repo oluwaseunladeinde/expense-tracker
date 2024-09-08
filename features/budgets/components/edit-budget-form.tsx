@@ -18,45 +18,47 @@ import { IconList } from "@/lib/constants";
 import { SelectItem } from "@/components/ui/select";
 import { createBudget } from "@/lib/actions/budget.actions";
 import { useRouter } from "next/navigation";
+import { insertBudgetSchema } from "@/db/schema";
+import { Button } from "@/components/ui/button";
+import { Trash } from "lucide-react";
 
-export const CreateBudgetForm = ({ openDialog }: { openDialog: Dispatch<SetStateAction<boolean>> }) => {
-    const [isLoading, setIsLoading] = useState(false);
-    const router = useRouter();
 
-    const form = useForm<z.infer<typeof BudgetFormValidation>>({
-        resolver: zodResolver(BudgetFormValidation),
-        defaultValues: {
-            name: "",
-            amount: 0,
-            icon: "",
-        },
+const formSchema = insertBudgetSchema.pick({
+    name: true,
+    amount: true,
+    icon: true
+});
+
+type FormValues = z.input<typeof formSchema>;
+
+type Props = {
+    budgetId: string;
+    defaultValues: FormValues;
+    onSubmit: (values: FormValues) => void;
+    onDelete?: () => void;
+    disabled: boolean;
+};
+
+export const EditBudgetForm = ({ budgetId, defaultValues, onDelete, onSubmit, disabled }: Props) => {
+
+    const form = useForm<FormValues>({
+        resolver: zodResolver(formSchema),
+        defaultValues: defaultValues,
     });
 
-    const onSubmit = async (values: z.infer<typeof BudgetFormValidation>) => {
-        setIsLoading(true);
-        try {
-            const budget: CreateBudgetParams = {
-                name: values.name,
-                amount: String(values.amount),
-                icon: values.icon,
-            };
-            const newBudget = await createBudget(budget);
+    const handleSubmit = (values: FormValues) => {
+        onSubmit(values);
+    };
 
-            if (newBudget) {
-                toast.success("Budget creation was succesful.");
-                openDialog(false);
-                router.refresh();
-            }
-        } catch (error) {
-            console.log(error);
-            toast.error("Budget creation failed.");
-        }
-        setIsLoading(false);
-    }
+    const handleDelete = () => {
+        console.log("Deleting...")
+        onDelete?.();
+    };
+
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="flex-1 space-y-6">
+            <form onSubmit={form.handleSubmit(handleSubmit)} className="flex-1 space-y-6">
                 <CustomFormField
                     fieldType={FormFieldType.SELECT}
                     control={form.control}
@@ -93,7 +95,17 @@ export const CreateBudgetForm = ({ openDialog }: { openDialog: Dispatch<SetState
                     label="Amount"
                     placeholder="$5000"
                 />
-                <SubmitButton className="mt-5 w-full" isLoading={isLoading}>Create Budget</SubmitButton>
+                <SubmitButton className="mt-5 w-full" isLoading={disabled}>Update Budget</SubmitButton>
+                {!!budgetId && <Button
+                    type="button"
+                    disabled={disabled}
+                    onClick={handleDelete}
+                    className="w-full"
+                    variant={"outline"}
+                >
+                    <Trash className="mr-2 size-4" />
+                    Delete
+                </Button>}
             </form>
         </Form>
     )

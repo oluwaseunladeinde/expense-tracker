@@ -25,8 +25,8 @@ declare type NewUserParams = {
 
 declare type CreateBudgetParams = {
     name: string;
-    amount: string;
-    icon: string;
+    amount: number;
+    icon?: string;
 }
 
 declare type AddExpenseParams = {

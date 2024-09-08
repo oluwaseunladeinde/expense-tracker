@@ -5,14 +5,12 @@ export const BudgetFormValidation = z.object({
         .string()
         .min(2, "Name must be at least 2 characters")
         .max(50, "Name must be at most 50 characters"),
-    amount: z
-        .number()
-        .or(z.string().regex(/\d+/).transform(Number))
-        .refine((n) => n >= 0),
+    amount: z.string().regex(/^\d+$/).transform(Number),
     icon: z
         .string()
         .min(2, "Name must be at least 2 characters")
-        .max(50, "Name must be at most 50 characters"),
+        .max(50, "Name must be at most 50 characters")
+        .optional(),
 });
 
 

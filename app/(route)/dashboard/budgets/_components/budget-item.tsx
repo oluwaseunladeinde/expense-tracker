@@ -56,7 +56,7 @@ export const BudgetItem = async ({ budget, height }: BudgetItemProps) => {
     )
 }
 
-export const BudgetItemSkeleton = ({ height }: { height: string }) => {
+export const BudgetItemSkeleton = () => {
     return (
         <div className="grid h-screen mt-20 bg-white px-4">
             <div className="text-center">
@@ -64,7 +64,7 @@ export const BudgetItemSkeleton = ({ height }: { height: string }) => {
 
                 <p className="text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">Uh-oh!</p>
 
-                <p className="mt-4 text-gray-500">We can't find that page.</p>
+                <p className="mt-4 text-gray-500">We can&apos;t find that page.</p>
 
                 <Link
                     href="/dashboard/budgets"

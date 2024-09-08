@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
+import { QueryProvider } from "@/providers/query-provider";
 
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import { SheetProvider } from "@/providers/sheet-providers";
 
 const outfit = Outfit({ subsets: ["latin"] });
 
@@ -23,8 +25,11 @@ export default function RootLayout({
         <body
           className={`${outfit.className} antialiased`}
         >
-          <Toaster />
-          {children}
+          <QueryProvider>
+            <SheetProvider />
+            <Toaster />
+            {children}
+          </QueryProvider>
         </body>
       </html>
     </ClerkProvider>
