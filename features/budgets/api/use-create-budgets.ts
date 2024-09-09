@@ -3,7 +3,7 @@ import { db } from "@/db/drizzle";
 import { budgets } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
-export const useGetBudgets = (user_email: string) => {
+export const useCreateBudgets = (user_email: string) => {
     const query = useQuery({
         queryKey: ['budgets'],
         queryFn: async () => {

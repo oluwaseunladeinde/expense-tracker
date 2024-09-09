@@ -47,3 +47,16 @@ declare type ExpenseItemProps = {
 declare type ExpenseListProps = {
     expensesList: expenses;
 }
+
+
+declare type BudgetListProps = {
+    totalSpend: number;
+    totalItem: number;
+    id: number;
+    name: string;
+    amount: number;
+    icon: string | null;
+    createdBy: string;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+}
