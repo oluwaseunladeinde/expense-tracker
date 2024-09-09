@@ -3,7 +3,7 @@
 import { db } from "@/db/drizzle";
 import { budgets, expenses } from "@/db/schema";
 import { currentUser } from "@clerk/nextjs/server";
-import { desc, eq, getTableColumns, sql } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 
 export const createExpense = async (expense: AddExpenseParams) => {
     const user = await currentUser();
@@ -26,6 +26,29 @@ export const createExpense = async (expense: AddExpenseParams) => {
     }
 };
 
+export const getUserExpenses = async () => {
+    const user = await currentUser();
+    if (!user || !user.primaryEmailAddress) {
+        throw Error("Not authorized");
+    }
+    try {
+        const response = await db
+            .select({
+                id: expenses.id,
+                name: expenses.name,
+                amount: expenses.amount,
+                createdAt: expenses.createdAt
+            })
+            .from(budgets)
+            .rightJoin(expenses, eq(budgets.id, expenses.budgetId))
+            .where(eq(budgets.createdBy, user?.primaryEmailAddress?.emailAddress))
+            .orderBy(desc(expenses.createdAt));
+        return response;
+    } catch (error) {
+
+    }
+}
+
 export const getExpenses = async (budgetId: string) => {
     const user = await currentUser();
     if (!user) {
@@ -35,7 +58,7 @@ export const getExpenses = async (budgetId: string) => {
     try {
         const response = await db.select()
             .from(expenses)
-            .where(eq(expenses.budgetId, budgetId))
+            .where(eq(expenses.budgetId, Number(budgetId)))
             .orderBy(desc(expenses.createdAt));
         return response;
     } catch (error) {

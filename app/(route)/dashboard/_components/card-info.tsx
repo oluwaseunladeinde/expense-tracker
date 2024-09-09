@@ -2,10 +2,13 @@ import { formatNaira } from '@/lib/utils';
 import { PiggyBank, ReceiptText, Wallet } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
-export const CardInfo = ({ budgetList }: any) => {
+export const CardInfo = (budgetList: any) => {
     const [finalTotalBudget, setFinaTotalBudget] = useState<number>(0);
     const [finalTotalSpend, setFinaTotalSpend] = useState<number>(0);
     const [finalTotalCount, setFinaTotalCount] = useState<number>(0);
+
+    console.log({ budgetList });
+
     const _budgetList = budgetList.budgetList;
 
     useEffect(() => {
@@ -17,7 +20,7 @@ export const CardInfo = ({ budgetList }: any) => {
         let totalBuget = 0;
         let totalSpend = 0;
         let totalCount = 0;
-        _budgetList.forEach((budget) => {
+        _budgetList.forEach((budget: BudgetListProps) => {
             totalBuget = totalBuget + budget.amount;
             totalSpend = totalSpend + budget.totalSpend;
             totalCount = totalCount + 1;
@@ -61,8 +64,8 @@ export const CardInfoSkeleton = () => {
         <div className='mt-7 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
             <div className='p-7 border rounded-lg flex items-center justify-between'>
                 <div className='flex flex-col gap-2'>
-                    <div className='h-4 w-40 bg-gray-300 animate-pulse' />
-                    <div className='h-4 w-60 bg-gray-300 animate-pulse' />
+                    <div className='h-4 w-40 bg-gray-200 animate-pulse' />
+                    <div className='h-4 w-60 bg-gray-200 animate-pulse' />
                 </div>
                 <div className='bg-gray-300 animate-pulse p-3 size-12 rounded-full' />
             </div>

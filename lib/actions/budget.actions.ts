@@ -28,7 +28,7 @@ export const createBudget = async (budget: CreateBudgetParams) => {
 
 export const getBudgets = async () => {
     const user = await currentUser();
-    if (!user) {
+    if (!user || !user.primaryEmailAddress) {
         throw Error("No budget exists!!!");
     }
 
@@ -69,7 +69,7 @@ export const getBudget = async (budgetId: string | undefined) => {
             .leftJoin(expenses, eq(budgets.id, expenses.budgetId))
             .where(
                 and(
-                    eq(budgets.id, budgetId),
+                    eq(budgets.id, Number(budgetId)),
                     eq(budgets.createdBy, user?.primaryEmailAddress?.emailAddress)
                 )
             )

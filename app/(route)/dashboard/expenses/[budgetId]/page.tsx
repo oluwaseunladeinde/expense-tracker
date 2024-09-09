@@ -26,7 +26,6 @@ const ExpensePage = async ({ params }: { params: ExpenseItemProps }) => {
                 <AddExpense budgetId={params.budgetId} />
             </div>
             <div className='mt-4'>
-                <h2 className='font-bold text-lg'>Latest Expenses</h2>
                 <ExpenseList expensesList={expensesList} />
             </div>
         </div>

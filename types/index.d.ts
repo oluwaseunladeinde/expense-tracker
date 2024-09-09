@@ -10,9 +10,8 @@ declare type SearchParamProps = {
 declare type ExpenseProps = {
     id: number;
     name: string;
-    amount: number;
-    createdAt: Date;
-    updatedAt: Date;
+    amount: string;
+    createdAt: Date | null;
 }
 
 declare type NewUserParams = {
@@ -43,11 +42,6 @@ declare type BudgetItemProps = {
 declare type ExpenseItemProps = {
     budgetId: string;
 }
-
-declare type ExpenseListProps = {
-    expensesList: expenses;
-}
-
 
 declare type BudgetListProps = {
     totalSpend: number;

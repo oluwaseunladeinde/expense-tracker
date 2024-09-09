@@ -5,15 +5,27 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const formatNaira = (value: number): string => {
+export const formatNaira = (value: number | string | null): string => {
+  if (value === null) {
+    return '';
+  }
   return new Intl.NumberFormat('en-NG', {
     style: 'currency',
     currency: 'NGN',
     minimumFractionDigits: 2, // Ensures two decimal places
-  }).format(value);
+  }).format(Number(value));
 };
 
-export const formatDateTime = (dateString: Date | string, timeZone?: string) => {
+export const formatDateTime = (dateString: Date | string | null) => {
+  if (dateString === null) {
+    return {
+      dateTime: '',
+      dateDay: '',
+      dateOnly: '',
+      timeOnly: '',
+    };
+  }
+
   const dateTimeOptions: Intl.DateTimeFormatOptions = {
     // weekday: "short", // abbreviated weekday name (e.g., 'Mon')
     month: "short", // abbreviated month name (e.g., 'Oct')

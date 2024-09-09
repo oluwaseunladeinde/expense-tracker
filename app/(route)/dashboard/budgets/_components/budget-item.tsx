@@ -3,7 +3,7 @@ import { formatNaira } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export const BudgetItem = async ({ budget, height }: BudgetItemProps) => {
+export const BudgetItem = ({ budget, height }: BudgetItemProps) => {
 
     if (!budget) {
         return null;
