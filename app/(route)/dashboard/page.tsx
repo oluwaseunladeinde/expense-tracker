@@ -4,7 +4,6 @@ import { useUser } from "@clerk/nextjs"
 import { CardInfo, CardInfoSkeleton } from "./_components/card-info";
 import { useGetBudgets } from "@/features/budgets/api/use-get-budgets";
 import { BarChartCard, BarChartCardSkeleton } from "./_components/bar-chart-card";
-import { BudgetItem } from "./budgets/_components/budget-item";
 import { useGetUserExpenses } from "@/features/expenses/use-get-user-expenses";
 import ExpenseList, { ExpenseListSkeleton } from "./expenses/_components/expense-list";
 import { BudgetListCard } from "./_components/budget-list-card";
@@ -12,7 +11,7 @@ import { BudgetListCard } from "./_components/budget-list-card";
 const DashboardPage = () => {
     const { user } = useUser();
     const { data: budgetList, isLoading } = useGetBudgets();
-    const { data: expensesList, isLoading: expensesDataLoading } = useGetUserExpenses();
+    const { data: expensesList } = useGetUserExpenses();
 
     return (
         <div className="p-8">

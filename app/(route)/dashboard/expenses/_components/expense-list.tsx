@@ -16,7 +16,7 @@ export const ExpenseListSkeleton = () => {
     )
 }
 
-const ExpenseList = ({ expensesList }: any) => {
+const ExpenseList = ({ expensesList, showtitle }: any) => {
 
     const route = useRouter();
     const [isDeleteLoading, setIsDeleteLoading] = useState(false);
@@ -37,7 +37,7 @@ const ExpenseList = ({ expensesList }: any) => {
 
     return (
         <div className='mt-5'>
-            <h2 className='font-bold text-lg'>Latest Expenses</h2>
+            {showtitle && <h2 className='font-bold text-lg'>Latest Expenses</h2>}
             <div className='grid grid-cols-1 md:grid-cols-4 bg-slate-200 p-2 mt-3'>
                 <h2 className='font-semibold'>Name</h2>
                 <h2 className='font-semibold'>Amount</h2>
